@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="jquery.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;    
+      color: #4D6680;  
+    }
+    body #tooltip {
+      color: #fff;
+    }
+    .chart .slice:hover, .donut-chart .donut-slice:hover {
+      cursor: pointer;
+    }
+    .chart, .donut-chart {
+      margin: 50px 100px;
+    }
+    .chart-area {
+      width: 800px;
+    }
+    #tooltip {
+      position: absolute;
+      height: auto;
+      padding: 10px;
+      background-color: white;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); pointer-events: none;
+    }
+    #tooltip.hidden { 
+      display: none;
+    }
+    #tooltip p { 
+      margin: 0;
+      font-family: sans-serif; font-size: 16px;
+      line-height: 20px;
+    }
+    .circle-chart-area {
+      display: flex;
+    }
+    .chart-info {
+      width: 300px;
+    }
+    .bar-chart {
+      margin-left: 50px;
+    }
+    .pie-chart-list, .donut-chart-list {
+      padding: 0;
+      margin-top: 60px;
+    }
+    .dot-chart-list {
+      display: flex;
+      margin: auto 50px;
+      justify-content: space-evenly;
+    }
+    .chart-list-item {
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .chart-list-item.horizontal {
+      margin: 0;
+    }
+    .chart-list-item > div {
+      display: flex;
+    }
+    .chart-list-item-circle {
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      margin-right: 16px;
+    }
+    .chart-list-item.horizontal .chart-list-item-circle {
+      border: 2px solid;
+    }
+    .tick line {
+      display: none;
+    }
+    .tick text {
+      font-size: 14px;
+    }
+    .bar-chart {
+      position: relative;
+      margin: 0px;
+    }
+    div.bar {
+      position: absolute;
+      border-radius: 8px 8px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Basic pie chart -->
+  <div class="chart-area circle-chart-area">
+    <svg class="chart"></svg>
+    
+    <div class="chart-info">
+      <div class="chart-selector">
+        <select name="" id="pie-chart-selector">
+          <option value="0">1</option>
+          <option value="1">2</option>
+        </select>
+      </div>
+    
+      <ul class="pie-chart-list"></ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Basic donut chart -->
+  <div class="chart-area circle-chart-area">
+      <svg class="donut-chart"></svg>
+
+      <div class="chart-info">
+        <div class="chart-selector">
+          <select name="" id="donut-chart-selector">
+            <option value="0">1</option>
+            <option value="1">2</option>
+          </select>
+        </div>
+
+        <ul class="donut-chart-list"></ul>
+      </div>
+  </div>
+
+  <hr>
+
+  <!-- Dot chart -->
+  <div class="chart-area">
+    <ul class="dot-chart-list"></ul>
+
+    <svg class="dot-chart"></svg>
+
+    <button id="dot-chart-gen-vals">Generate new values</button>
+  </div>
+
+  <div id="tooltip" class="hidden">
+    <p id="value"></p>
+  </div>
+
+  <hr>
+
+  <!-- Bar chart -->
+  <div class="chart-area">
+    <div class="bar-chart"></div>
+
+    <button id="bar-chart-gen-vals">Generate new values</button>
+  </div>
+
+  <script>
+    function createDataList(data, selector) {
+      $(selector).empty();
+      data.map(item => {
+        var iitem = item.data || item;
+        $(selector).append(
+          '<li class="chart-list-item">' +
+            '<div>' +
+              '<div class="chart-list-item-circle" style="background-color: ' + iitem.color + '"></div>' +
+              '<span>' + iitem.name + '</span> ' +
+            '</div>' +
+            '<span>' + iitem.val + '</span>' +
+          '</li>'
+        )
+      });
+    }
+
+    function buildHorizontalDataList(data, selector) {
+      $(selector).empty();
+      data.map(item => {
+        var iitem = item.data || item;
+        $(selector).append(
+          '<li class="chart-list-item horizontal">' +
+              '<div class="chart-list-item-circle" style="border-color: ' + iitem.color + '"></div>' +
+              '<span>' + iitem.name + '</span>' +
+          '</li>'
+        );
+      })
+    }
+  </script>
+  <script src="d3.v5.min.js" charset="utf-8"></script>
+  <script src="donutChart.js"></script>
+  <script src="pieChart.js"></script>
+  <script src="dotChart.js"></script>
+  <script src="barChart.js"></script>
+</body>
+</html>
